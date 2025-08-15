@@ -1,0 +1,157 @@
+.formContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 40px 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 9px 36px -11px #bdbdbd;
+  box-shadow: 0px 9px 36px -11px #bdbdbd;
+  border: 2px solid #ede9ff;
+}
+
+form {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 100%;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.inputContainer p {
+  margin-bottom: 5px;
+  color: #4d179a;
+  font-size: 0.9rem;
+}
+
+.inputs {
+  display: flex;
+  align-items: center;
+  border: 1px solid #8832fe;
+  border-radius: 5px;
+  padding: 8px;
+  width: 100%;
+}
+
+.inputs svg {
+  margin-left: 10px;
+  color: #8832fe;
+  font-size: 1.5rem;
+}
+
+.inputs input {
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+.inputs input:focus {
+  outline: none;
+}
+
+.inputs input::placeholder {
+  color: #ccc;
+}
+
+.inputs svg {
+  cursor: pointer;
+}
+
+.submitBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: radial-gradient(
+    circle,
+    rgba(136, 50, 254, 1) 0%,
+    rgba(77, 23, 154, 1) 100%
+  );
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.submitBtn svg {
+  margin-right: 5px;
+  font-size: 1.2rem;
+}
+
+.submitBtn:hover {
+  transform: scale(1.03);
+  filter: brightness(1.1);
+  color: #fff;
+}
+
+.formContainer p {
+  margin-top: 5px;
+  color: #8832fe;
+  font-size: 0.9rem;
+}
+
+.formContainer a {
+  color: #4d179a;
+}
+
+.inputError {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ff3838;
+  border-radius: 5px;
+  padding: 8px;
+  width: 100%;
+}
+
+.inputError svg {
+  margin-left: 10px;
+  color: #ff3838;
+  font-size: 1.5rem;
+}
+
+.inputError input {
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+.inputError input:focus {
+  outline: none;
+}
+
+.inputError input::placeholder {
+  color: #ccc;
+}
+
+.inputError svg {
+  cursor: pointer;
+}
+
+.errorBox {
+  padding: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ff3838;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  border: 1px solid #ff3838;
+  border-radius: 5px;
+  background-color: #ffe0e0;
+}
+
+.errorBox svg {
+  font-size: 1.4rem;
+  margin-left: 5px;
+}
