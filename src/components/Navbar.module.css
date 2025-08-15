@@ -1,0 +1,76 @@
+.container {
+  position: sticky;
+  width: 100%;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fdfcff;
+  padding: 5px 0;
+  border-bottom: 2px solid #ede9ff;
+}
+
+.container div {
+  margin: 0 60px;
+}
+
+button {
+  outline: none;
+  padding: 7px 15px;
+  margin: 6px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid #c9c5d6;
+  background-color: #fff;
+  color: #8832fe;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+}
+
+button svg {
+  margin-right: 5px;
+}
+
+button:hover {
+  border-color: #8832fe;
+  color: #000;
+  background-color: #8732fe18;
+}
+
+.login {
+  display: inline-block;
+  text-decoration: none;
+  padding: 4.5px 15px;
+  border-radius: 5px;
+  background: #8832fe;
+  background: radial-gradient(
+    circle,
+    rgba(136, 50, 254, 1) 0%,
+    rgba(77, 23, 154, 1) 100%
+  );
+  transition: all 0.2s ease-in-out;
+  color: #fff;
+}
+
+.login:hover {
+  filter: contrast(1.3);
+  transform: scale(1.05);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  color: #8832fe;
+  font-family: "Vazirmatn Bold";
+  font-size: 1.3rem;
+}
+
+.logo svg {
+  padding: 5px;
+  width: 30px;
+  height: 30px;
+  color: #fff;
+  background-color: #8832fe;
+  border-radius: 10px;
+  margin-left: 10px;
+}
