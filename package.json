@@ -10,9 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@formkit/auto-animate": "^0.8.2",
     "@reduxjs/toolkit": "^2.8.2",
     "axios": "^1.11.0",
+    "framer-motion": "^12.23.12",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-dropzone": "^14.3.8",

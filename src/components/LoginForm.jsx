@@ -10,7 +10,7 @@ import { Link } from "react-router-dom"
 
 import { useState } from "react"
 
-import autoAnimate from "@formkit/auto-animate"
+import { motion } from "framer-motion"
 
 import validation from "../utils/loginValidation"
 
@@ -43,14 +43,29 @@ function LoginForm() {
 
   return (
     <div>
-      <div ref={autoAnimate}>
+      <motion.div
+        className={styles.errorBox}
+        initial={{ opacity: 0, y: -20, height: 0 }}
+        animate={{
+          opacity: Object.keys(errors).length > 0 ? 1 : 0,
+          y: Object.keys(errors).length > 0 ? 0 : -20,
+          height: Object.keys(errors).length > 0 ? "auto" : 0,
+        }}
+        exit={{ opacity: 0, y: -20, height: 0 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+      >
         {Object.keys(errors).length > 0 && (
-          <div className={styles.errorBox}>
+          <motion.div
+            style={{ display: "flex" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.15 }}
+          >
             <MdErrorOutline />
             <p>لطفا همه فیلدها را پر کنید</p>
-          </div>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
 
       <div className={styles.formContainer}>
         <form>

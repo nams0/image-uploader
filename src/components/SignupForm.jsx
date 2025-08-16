@@ -5,12 +5,12 @@ import { IoArrowBack } from "react-icons/io5"
 
 import styles from "./SignupForm.module.css"
 
-import { useState, useRef } from "react"
+import { useState } from "react"
 import validation from "../utils/signupValidation"
 
-import autoAnimate from "@formkit/auto-animate"
-
 import api from "../services/api"
+
+import { motion } from "framer-motion"
 
 const usernameRegex = /[^A-Za-z0-9_]/g
 const englishRegex = /[^A-Za-z0-9\s!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g
@@ -29,7 +29,6 @@ function SignupForm() {
   })
 
   const [errors, setErrors] = useState({})
-  const formRef = useRef(null)
 
   const handleShowPassword = (password) => {
     password === "password"
@@ -64,27 +63,44 @@ function SignupForm() {
     }
   }
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault()
     setErrors({})
     validation(user, setErrors)
     console.log(user)
 
     if (Object.keys(errors).length === 0) {
-      api
-        .post("/api/auth/register", user, {
+      try {
+        const response = await api.post("/api/auth/register", user, {
           headers: { "Content-Type": "application/json" },
         })
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err))
+        console.log(response)
+      } catch (error) {
+        errors.fetchError = true
+      }
     }
   }
 
   return (
     <div>
-      <div ref={autoAnimate}>
+      <motion.div
+        className={styles.errorBox}
+        initial={{ opacity: 0, y: -20, height: 0 }}
+        animate={{
+          opacity: Object.keys(errors).length > 0 ? 1 : 0,
+          y: Object.keys(errors).length > 0 ? 0 : -20,
+          height: Object.keys(errors).length > 0 ? "auto" : 0,
+        }}
+        exit={{ opacity: 0, y: -20, height: 0 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+      >
         {Object.keys(errors).length > 0 && (
-          <div className={styles.errorBox}>
+          <motion.div
+            style={{ display: "flex" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.15 }}
+          >
             <MdErrorOutline />
             {errors.fillInputs && <p>لطفا همه فیلدها را پر کنید</p>}
             {errors.incorrectEmail && <p>ایمیل وارد شده صحیح نیست</p>}
@@ -94,11 +110,12 @@ function SignupForm() {
             {errors.incorrectConfirmPassword && (
               <p> رمز عبور تکرار شده درست نیست</p>
             )}
-          </div>
+            {errors.fetchError && <p>خطای شبکه</p>}
+          </motion.div>
         )}
-      </div>
+      </motion.div>
       <div className={styles.formContainer}>
-        <form ref={formRef}>
+        <form>
           <div className={styles.inputContainer}>
             <p>
               نام کاربری<span>*</span>
