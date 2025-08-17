@@ -1,49 +1,58 @@
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-const passwordRegex = /[^A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/
+const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/
 
 const validation = (user, setErrors) => {
+  let isValid = true
+  const newErrors = {}
+
   if (!user.username) {
-    setErrors({ username: true })
+    newErrors.username = true
+    isValid = false
   }
-  if (!user.email)
-    setErrors((prevState) => ({
-      ...prevState,
-      email: true,
-    }))
-  if (!user.password)
-    setErrors((prevState) => ({
-      ...prevState,
-      password: true,
-    }))
-  if (!user.confirmPassword)
-    setErrors((prevState) => ({
-      ...prevState,
-      confirmPassword: true,
-    }))
+  if (!user.email) {
+    newErrors.email = true
+    isValid = false
+  }
+  if (!user.password) {
+    newErrors.password = true
+    isValid = false
+  }
+  if (!user.confirmPassword) {
+    newErrors.confirmPassword = true
+    isValid = false
+  }
 
-  if (!user.username || !user.email || !user.password || !user.confirmPassword)
-    return setErrors((prevState) => ({ ...prevState, fillInputs: true }))
+  if (
+    !user.username ||
+    !user.email ||
+    !user.password ||
+    !user.confirmPassword
+  ) {
+    newErrors.fillInputs = true
+    isValid = false
+  }
 
-  if (!emailRegex.test(user.email))
-    return setErrors((prevState) => ({
-      ...prevState,
-      email: true,
-      incorrectEmail: true,
-    }))
+  if (user.email && !emailRegex.test(user.email)) {
+    newErrors.email = true
+    newErrors.incorrectEmail = true
+    isValid = false
+  }
 
-  if (passwordRegex.test(user.password))
-    return setErrors((prevState) => ({
-      ...prevState,
-      password: true,
-      incorrectPassword: true,
-    }))
+  if (user.password && !passwordRegex.test(user.password)) {
+    newErrors.password = true
+    newErrors.incorrectPassword = true
+    isValid = false
+  }
 
-  if (user.password !== user.confirmPassword)
-    return setErrors((prevState) => ({
-      ...prevState,
-      confirmPassword: true,
-      incorrectConfirmPassword: true,
-    }))
+  if (user.password !== user.confirmPassword) {
+    newErrors.confirmPassword = true
+    newErrors.incorrectConfirmPassword = true
+    isValid = false
+  }
+
+  setErrors(newErrors)
+  return isValid
 }
 
 export default validation

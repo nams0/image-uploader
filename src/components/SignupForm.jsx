@@ -12,10 +12,14 @@ import api from "../services/api"
 
 import { motion } from "framer-motion"
 
+import { useNavigate } from "react-router-dom"
+
 const usernameRegex = /[^A-Za-z0-9_]/g
 const englishRegex = /[^A-Za-z0-9\s!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g
 
 function SignupForm() {
+  const navigate = useNavigate()
+
   const [showPassword, setShowPassword] = useState({
     password: false,
     confirmPassword: false,
@@ -66,17 +70,18 @@ function SignupForm() {
   const submitHandler = async (e) => {
     e.preventDefault()
     setErrors({})
-    validation(user, setErrors)
-    console.log(user)
+    const isValid = validation(user, setErrors)
+    console.log(isValid)
 
-    if (Object.keys(errors).length === 0) {
+    if (isValid) {
       try {
         const response = await api.post("/api/auth/register", user, {
           headers: { "Content-Type": "application/json" },
         })
         console.log(response)
+        navigate("/")
       } catch (error) {
-        errors.fetchError = true
+        setErrors({ fetchError: error.response.data.error })
       }
     }
   }
@@ -103,14 +108,16 @@ function SignupForm() {
           >
             <MdErrorOutline />
             {errors.fillInputs && <p>لطفا همه فیلدها را پر کنید</p>}
-            {errors.incorrectEmail && <p>ایمیل وارد شده صحیح نیست</p>}
-            {errors.incorrectPassword && (
+            {errors.incorrectEmail && !errors.fillInputs && (
+              <p>ایمیل وارد شده صحیح نیست</p>
+            )}
+            {errors.incorrectPassword && !errors.fillInputs && (
               <p>رمز عبور وارد شده مطابق الگو نیست</p>
             )}
-            {errors.incorrectConfirmPassword && (
+            {errors.incorrectConfirmPassword && !errors.fillInputs && (
               <p> رمز عبور تکرار شده درست نیست</p>
             )}
-            {errors.fetchError && <p>خطای شبکه</p>}
+            {errors.fetchError && <p>{errors.fetchError}</p>}
           </motion.div>
         )}
       </motion.div>
