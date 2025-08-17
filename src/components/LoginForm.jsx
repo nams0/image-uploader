@@ -6,7 +6,7 @@ import { MdOutlineLock, MdErrorOutline } from "react-icons/md"
 
 import { IoArrowBack } from "react-icons/io5"
 
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import { useState } from "react"
 
@@ -14,7 +14,12 @@ import { motion } from "framer-motion"
 
 import validation from "../utils/loginValidation"
 
+import api from "../services/api"
+
+import Cookies from "js-cookie"
+
 function LoginForm() {
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [user, setUser] = useState({
     email: "",
@@ -22,19 +27,34 @@ function LoginForm() {
   })
   const [errors, setErrors] = useState({})
 
-  console.log(user)
-  console.log(errors)
-
   const handleChange = (e) => {
     const name = e.target.name
     const value = e.target.value.trim()
     setUser({ ...user, [name]: value })
   }
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault()
     setErrors({})
-    validation(user, setErrors)
+    const isValid = validation(user, setErrors)
+    if (isValid) {
+      try {
+        const { token } = await api.post("/api/auth/login", user, {
+          headers: { "Content-Type": "application/json" },
+        })
+        
+        Cookies.set("auth-token", token, {
+          expires: 7,
+          secure: true,
+          sameSite: "strict",
+          path: "/",
+        })
+
+        navigate("/")
+      } catch (error) {
+        setErrors({ fetchError: error.response.data.error })
+      }
+    }
   }
 
   const handleShowPassword = () => {
@@ -62,7 +82,8 @@ function LoginForm() {
             transition={{ delay: 0.15 }}
           >
             <MdErrorOutline />
-            <p>لطفا همه فیلدها را پر کنید</p>
+            {!errors.fetchError && <p>لطفا همه فیلدها را پر کنید</p>}
+            {errors.fetchError && <p>{errors.fetchError}</p>}
           </motion.div>
         )}
       </motion.div>

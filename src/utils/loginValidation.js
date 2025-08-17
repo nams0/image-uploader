@@ -1,12 +1,17 @@
-const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-const passwordRegex = /[^A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/
-
 const validation = (user, setErrors) => {
-  if (!user.email) setErrors((prevState) => ({ ...prevState, email: true }))
+  let isValid = true
+  const newErrors = {}
+  if (!user.email) {
+    newErrors.email = true
+    isValid = false
+  }
 
-  if (!user.password)
-    setErrors((prevState) => ({ ...prevState, password: true }))
-  return
+  if (!user.password) {
+    newErrors.password = true
+    isValid = false
+  }
+  setErrors(newErrors)
+  return isValid
 }
 
 export default validation

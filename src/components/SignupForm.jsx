@@ -14,6 +14,8 @@ import { motion } from "framer-motion"
 
 import { useNavigate } from "react-router-dom"
 
+import Cookies from "js-cookie"
+
 const usernameRegex = /[^A-Za-z0-9_]/g
 const englishRegex = /[^A-Za-z0-9\s!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g
 
@@ -57,7 +59,7 @@ function SignupForm() {
     } else if (name === "email") {
       setUser((prevState) => ({
         ...prevState,
-        email: value.replace(englishRegex, ""),
+        email: value.toLowerCase().replace(englishRegex, ""),
       }))
     } else {
       setUser((prevState) => ({
@@ -75,10 +77,17 @@ function SignupForm() {
 
     if (isValid) {
       try {
-        const response = await api.post("/api/auth/register", user, {
+        const { token } = await api.post("/api/auth/register", user, {
           headers: { "Content-Type": "application/json" },
         })
-        console.log(response)
+        
+        Cookies.set("auth_token", token, {
+          expires: 7,
+          secure: true,
+          sameSite: "strict",
+          path: "/",
+        })
+
         navigate("/")
       } catch (error) {
         setErrors({ fetchError: error.response.data.error })
