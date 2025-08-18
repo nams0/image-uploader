@@ -6,7 +6,7 @@ import { MdOutlineLock, MdErrorOutline } from "react-icons/md"
 
 import { IoArrowBack } from "react-icons/io5"
 
-import { Link, useNavigate } from "react-router-dom"
+import { Link, replace, useNavigate } from "react-router-dom"
 
 import { useState } from "react"
 
@@ -42,7 +42,7 @@ function LoginForm() {
         const { token } = await api.post("/api/auth/login", user, {
           headers: { "Content-Type": "application/json" },
         })
-        
+
         Cookies.set("auth-token", token, {
           expires: 7,
           secure: true,
@@ -50,7 +50,7 @@ function LoginForm() {
           path: "/",
         })
 
-        navigate("/")
+        navigate("/", { replace: true })
       } catch (error) {
         setErrors({ fetchError: error.response.data.error })
       }

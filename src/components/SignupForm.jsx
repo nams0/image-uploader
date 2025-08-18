@@ -12,7 +12,7 @@ import api from "../services/api"
 
 import { motion } from "framer-motion"
 
-import { useNavigate } from "react-router-dom"
+import { replace, useNavigate } from "react-router-dom"
 
 import Cookies from "js-cookie"
 
@@ -80,15 +80,15 @@ function SignupForm() {
         const { token } = await api.post("/api/auth/register", user, {
           headers: { "Content-Type": "application/json" },
         })
-        
-        Cookies.set("auth_token", token, {
+
+        Cookies.set("auth-token", token, {
           expires: 7,
           secure: true,
           sameSite: "strict",
           path: "/",
         })
 
-        navigate("/")
+        navigate("/", { replace: true })
       } catch (error) {
         setErrors({ fetchError: error.response.data.error })
       }
