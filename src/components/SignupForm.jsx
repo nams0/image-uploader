@@ -5,14 +5,14 @@ import { IoArrowBack } from "react-icons/io5"
 
 import styles from "./SignupForm.module.css"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import validation from "../utils/signupValidation"
 
 import api from "../services/api"
 
 import { motion } from "framer-motion"
 
-import { replace, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 import Cookies from "js-cookie"
 
@@ -35,6 +35,11 @@ function SignupForm() {
   })
 
   const [errors, setErrors] = useState({})
+
+  useEffect(() => {
+    const token = Cookies.get("auth-token")
+    if (token) navigate("/", { replace: true })
+  }, [])
 
   const handleShowPassword = (password) => {
     password === "password"

@@ -6,9 +6,9 @@ import { MdOutlineLock, MdErrorOutline } from "react-icons/md"
 
 import { IoArrowBack } from "react-icons/io5"
 
-import { Link, replace, useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { motion } from "framer-motion"
 
@@ -26,6 +26,11 @@ function LoginForm() {
     password: "",
   })
   const [errors, setErrors] = useState({})
+
+  useEffect(() => {
+    const token = Cookies.get("auth-token")
+    if (token) navigate("/", { replace: true })
+  }, [])
 
   const handleChange = (e) => {
     const name = e.target.name
