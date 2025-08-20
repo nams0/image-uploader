@@ -3,14 +3,14 @@ import { createSlice } from "@reduxjs/toolkit"
 const initialState = {
   uploading: false,
   uploaded: false,
-  fileUrl: "",
-  downloadUrl: "",
-  fileInfo: null,
+  fileUrls: [],
+  downloadUrls: [],
+  fileInfos: [],
   error: "",
-  uploadProgress: 0,
+  uploadProgress: {}, // Object to track progress of each file
 }
 
-const slice = createSlice({
+export const uploadSlice = createSlice({
   name: "uploader",
   initialState,
   reducers: {
@@ -20,32 +20,41 @@ const slice = createSlice({
     setUploaded: (state, action) => {
       state.uploaded = action.payload
     },
-    setFileUrl: (state, action) => {
-      state.fileUrl = action.payload
+    addFileUrl: (state, action) => {
+      state.fileUrls.push(action.payload)
     },
-    setDownloadUrl: (state, action) => {
-      state.downloadUrl = action.payload
+    addDownloadUrl: (state, action) => {
+      state.downloadUrls.push(action.payload)
     },
-    setFileInfo: (state, action) => {
-      state.fileInfo = action.payload
+    addFileInfo: (state, action) => {
+      state.fileInfos.push(action.payload)
     },
     setError: (state, action) => {
       state.error = action.payload
     },
     setUploadProgress: (state, action) => {
-      state.uploadProgress = action.payload
+      const { fileName, progress } = action.payload
+      state.uploadProgress[fileName] = progress
+    },
+    resetUploads: (state) => {
+      state.fileUrls = []
+      state.downloadUrls = []
+      state.fileInfos = []
+      state.uploadProgress = {}
+      state.uploaded = false
     },
   },
 })
 
-export default slice.reducer
-
 export const {
   setUploading,
   setUploaded,
-  setFileUrl,
-  setDownloadUrl,
-  setFileInfo,
+  addFileUrl,
+  addDownloadUrl,
+  addFileInfo,
   setError,
   setUploadProgress,
-} = slice.actions
+  resetUploads,
+} = uploadSlice.actions
+
+export default uploadSlice.reducer
