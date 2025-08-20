@@ -1,3 +1,108 @@
-.card img {
-    width: 100px;
+.albumContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 2px solid #f1eefe;
+  border-radius: 15px;
+  margin-top: 30px;
+  background-color: #fcfbff;
+  box-shadow: -3px 8px 25px -5px rgba(0, 0, 0, 0.18);
+  -webkit-box-shadow: -3px 8px 25px -5px rgba(0, 0, 0, 0.18);
+  -moz-box-shadow: -3px 8px 25px -5px rgba(0, 0, 0, 0.18);
+}
+
+.albumTitle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.albumTitleContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.albumTitleIcon {
+  color: #fff;
+  background-color: #8832fe;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  margin-left: 10px;
+}
+
+.albumInfo {
+  text-align: right;
+  font-size: 1rem;
+}
+
+.albumInfo p:first-child {
+  color: #4d179a;
+}
+
+.albumInfo .albumInfoCount {
+  color: #8832fe;
+}
+
+.albumTitle button {
+  color: #8832fe;
+  background-color: transparent;
+  font-size: 0.9rem;
+  border-radius: 10px;
+  border: 1px solid #c0becb;
+  height: 30px;
+  padding: 2px 9px;
+  margin-top: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.albumTitle button:hover {
+  border-color: #8832fe;
+  color: #000;
+  background-color: #8732fe18;
+}
+
+.emptyResult {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.emptyResultIcon {
+  background-color: #ede9fe;
+  color: #a684ff;
+  font-size: 2.4rem;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  padding: 18px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.emptyResultText {
+  color: #8832fe;
+}
+
+.emptyResultText .emptyResultTitle {
+  color: #4d179a;
+  margin-bottom: 10px;
+}
+
+.emptyResultFeatures {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.emptyResultFeatures p {
+  margin: 15px 10px 20px;
 }
