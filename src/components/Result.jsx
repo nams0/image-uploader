@@ -1,26 +1,39 @@
 import { useSelector } from "react-redux"
 import { useState, useEffect } from "react"
-
 import styles from "./Result.module.css"
-
 import { BsImages } from "react-icons/bs"
 
-function Result({ file }) {
+function Result({ files, setFiles }) {
   const store = useSelector((store) => store.uploader)
-  const [previewUrl, setPreviewUrl] = useState("") // State for the preview URL
+  const [previewUrls, setPreviewUrls] = useState({})
 
-  // Create object URL when file changes
+  // Create object URLs when files change
   useEffect(() => {
-    if (file) {
-      const objectUrl = URL.createObjectURL(file)
-      setPreviewUrl(objectUrl)
-
-      // Clean up the object URL when component unmounts
-      return () => {
-        URL.revokeObjectURL(objectUrl)
-      }
+    if (files && files.length > 0) {
+      const urls = {}
+      files.forEach((file) => {
+        if (!previewUrls[file.name]) {
+          urls[file.name] = URL.createObjectURL(file)
+        } else {
+          urls[file.name] = previewUrls[file.name]
+        }
+      })
+      setPreviewUrls(urls)
     }
-  }, [file])
+  }, [files])
+
+  // Clean up the object URLs when component unmounts
+  useEffect(() => {
+    return () => {
+      Object.values(previewUrls).forEach((url) => URL.revokeObjectURL(url))
+    }
+  }, [])
+
+  const handleRemoveAll = () => {}
+
+  const handleRemoveFile = (fileName) => {}
+
+  const allFiles = []
 
   return (
     <div>
@@ -32,27 +45,90 @@ function Result({ file }) {
             </div>
             <div className={styles.albumInfo}>
               <p>عکس های شما</p>
-              <p className={styles.albumInfoCount}>هنوز عکسی آپلود نشده</p>
+              <p className={styles.albumInfoCount}>
+                {allFiles.length > 0
+                  ? `${allFiles.length} عکس در آلبوم`
+                  : "هنوز عکسی آپلود نشده"}
+              </p>
             </div>
           </div>
 
-          <button>حذف همه</button>
+          {allFiles.length > 0 && (
+            <button onClick={handleRemoveAll}>حذف همه</button>
+          )}
         </div>
 
-        <div className={styles.emptyResult}>
-          <div className={styles.emptyResultIcon}>
-            <BsImages />
+        {allFiles.length > 0 ? (
+          <div className={styles.imagesGrid}>
+            {allFiles.map((file, index) => {
+              const fileInfo =
+                typeof file === "object"
+                  ? file
+                  : { name: file.name || `عکس ${index + 1}` }
+              const isUploaded = store.fileInfos.some(
+                (info) => info.name === fileInfo.name
+              )
+
+              return (
+                <div key={index} className={styles.imageItem}>
+                  <img
+                    src={previewUrls[fileInfo.name] || "/placeholder-image.jpg"}
+                    alt={fileInfo.name}
+                    className={styles.imagePreview}
+                  />
+                  <div className={styles.imageInfo}>
+                    <p className={styles.imageName}>{fileInfo.name}</p>
+                    <div className={styles.imageStatus}>
+                      {isUploaded ? (
+                        <span className={styles.uploadedBadge}>آپلود شده</span>
+                      ) : (
+                        <span className={styles.pendingBadge}>
+                          در انتظار آپلود
+                        </span>
+                      )}
+                    </div>
+                    {store.uploadProgress[fileInfo.name] !== undefined && (
+                      <div className={styles.progressContainer}>
+                        <div className={styles.progressBar}>
+                          <div
+                            className={styles.progressFill}
+                            style={{
+                              width: `${store.uploadProgress[fileInfo.name]}%`,
+                            }}
+                          ></div>
+                        </div>
+                        <span className={styles.progressText}>
+                          {store.uploadProgress[fileInfo.name]}%
+                        </span>
+                      </div>
+                    )}
+                    <button
+                      className={styles.removeButton}
+                      onClick={() => handleRemoveFile(fileInfo.name)}
+                    >
+                      حذف
+                    </button>
+                  </div>
+                </div>
+              )
+            })}
           </div>
-          <div className={styles.emptyResultText}>
-            <p className={styles.emptyResultTitle}>هنوز عکسی آپلود نشده</p>
-            <p>اولین عکستو به کمک بخش بالا آپلود کن</p>
-            <div className={styles.emptyResultFeatures}>
-              <p>✓ بگیر و رها کن</p>
-              <p>✓ انتخاب چندین عکس</p>
-              <p>✓ ردیابی فرایند</p>
+        ) : (
+          <div className={styles.emptyResult}>
+            <div className={styles.emptyResultIcon}>
+              <BsImages />
+            </div>
+            <div className={styles.emptyResultText}>
+              <p className={styles.emptyResultTitle}>هنوز عکسی آپلود نشده</p>
+              <p>عکس‌های خود را به کمک بخش بالا آپلود کنید</p>
+              <div className={styles.emptyResultFeatures}>
+                <p>✓ بگیر و رها کن</p>
+                <p>✓ انتخاب چندین عکس</p>
+                <p>✓ ردیابی فرایند</p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )
