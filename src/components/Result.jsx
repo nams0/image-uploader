@@ -33,7 +33,13 @@ function Result({ files, setFiles }) {
 
   const handleRemoveFile = (fileName) => {}
 
-  const allFiles = []
+  // Combine uploaded files with selected but not uploaded files
+  const allFiles = [
+    ...store.fileInfos,
+    ...files.filter(
+      (file) => !store.fileInfos.some((info) => info.name === file.name)
+    ),
+  ]
 
   return (
     <div>
