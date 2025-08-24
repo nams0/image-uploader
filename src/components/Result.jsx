@@ -29,7 +29,12 @@ function Result({ files, setFiles }) {
     }
   }, [])
 
-  const handleRemoveAll = () => {}
+  const handleRemoveAll = () => {
+    setFiles([])
+    // Also clean up the preview URLs
+    Object.values(previewUrls).forEach((url) => URL.revokeObjectURL(url))
+    setPreviewUrls({})
+  }
 
   const handleRemoveFile = (fileName) => {
     setFiles((prevFiles) => prevFiles.filter((file) => file.name !== fileName))
