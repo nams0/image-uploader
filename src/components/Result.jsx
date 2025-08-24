@@ -31,9 +31,19 @@ function Result({ files, setFiles }) {
 
   const handleRemoveAll = () => {}
 
-  const handleRemoveFile = (fileName) => {}
+  const handleRemoveFile = (fileName) => {
+    setFiles((prevFiles) => prevFiles.filter((file) => file.name !== fileName))
 
-  // Combine uploaded files with selected but not uploaded files
+    // Clean up the preview URL
+    if (previewUrls[fileName]) {
+      URL.revokeObjectURL(previewUrls[fileName])
+      const newUrls = { ...previewUrls }
+      delete newUrls[fileName]
+      setPreviewUrls(newUrls)
+    }
+  }
+
+  // Combine uploaded files with selected but not uploaded files with duplicate prevention
   const allFiles = [
     ...store.fileInfos,
     ...files.filter(
