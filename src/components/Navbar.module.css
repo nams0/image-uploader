@@ -8,6 +8,7 @@
   background-color: #fdfcff;
   padding: 10px 60px;
   border-bottom: 2px solid #ede9ff;
+  z-index: 100;
 }
 
 .container .btnsContainer {
