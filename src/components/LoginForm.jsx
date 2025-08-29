@@ -57,7 +57,7 @@ function LoginForm() {
 
         navigate("/", { replace: true })
       } catch (error) {
-        setErrors({ fetchError: error.response.data.error })
+        setErrors({ fetchError: error.response.data.message })
       }
     }
   }
@@ -87,7 +87,8 @@ function LoginForm() {
             transition={{ delay: 0.15 }}
           >
             <MdErrorOutline />
-            {!errors.fetchError && <p>لطفا همه فیلدها را پر کنید</p>}
+            {!errors.email ||
+              (!errors.password && <p>لطفا همه فیلدها را پر کنید</p>)}
             {errors.fetchError && <p>{errors.fetchError}</p>}
           </motion.div>
         )}
