@@ -101,7 +101,7 @@ const MainPage = () => {
         <Dropzone setFiles={setFiles} />
         <Result files={files} setFiles={setFiles} />
 
-        <button onClick={handleUpload} disabled={store.uploading}>
+        <button className={styles.uploadBtn} onClick={handleUpload} disabled={store.uploading}>
           {store.uploading ? "در حال آپلود..." : `آپلود ${files.length} عکس`}
         </button>
       </div>
