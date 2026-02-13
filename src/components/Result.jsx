@@ -2,50 +2,17 @@ import { useSelector } from "react-redux"
 import { useState, useEffect } from "react"
 import styles from "./Result.module.css"
 import { BsImages } from "react-icons/bs"
+import ImageCard from "./ImageCard"
 
 function Result({ files, setFiles }) {
   const store = useSelector((store) => store.uploader)
   const [previewUrls, setPreviewUrls] = useState({})
-
-  // Create object URLs when files change
-  useEffect(() => {
-    if (files && files.length > 0) {
-      const urls = {}
-      files.forEach((file) => {
-        if (!previewUrls[file.name]) {
-          urls[file.name] = URL.createObjectURL(file)
-        } else {
-          urls[file.name] = previewUrls[file.name]
-        }
-      })
-      setPreviewUrls(urls)
-    }
-  }, [files])
-
-  // Clean up the object URLs when component unmounts
-  useEffect(() => {
-    return () => {
-      Object.values(previewUrls).forEach((url) => URL.revokeObjectURL(url))
-    }
-  }, [])
 
   const handleRemoveAll = () => {
     setFiles([])
     // Also clean up the preview URLs
     Object.values(previewUrls).forEach((url) => URL.revokeObjectURL(url))
     setPreviewUrls({})
-  }
-
-  const handleRemoveFile = (fileName) => {
-    setFiles((prevFiles) => prevFiles.filter((file) => file.name !== fileName))
-
-    // Clean up the preview URL
-    if (previewUrls[fileName]) {
-      URL.revokeObjectURL(previewUrls[fileName])
-      const newUrls = { ...previewUrls }
-      delete newUrls[fileName]
-      setPreviewUrls(newUrls)
-    }
   }
 
   // Combine uploaded files with selected but not uploaded files with duplicate prevention
@@ -82,55 +49,22 @@ function Result({ files, setFiles }) {
         {allFiles.length > 0 ? (
           <div className={styles.imagesGrid}>
             {allFiles.map((file, index) => {
-              const fileInfo =
-                typeof file === "object"
-                  ? file
-                  : { name: file.name || `عکس ${index + 1}` }
-              const isUploaded = store.fileInfos.some(
-                (info) => info.name === fileInfo.name
-              )
+              // Fix: Ensure fileInfo is always a valid object
+              if (!file) return null;
+              
+              const fileInfo = file.name 
+                ? file // It's already a file object
+                : { name: `عکس ${index + 1}`, ...file } // Create a proper object
 
               return (
-                <div key={index} className={styles.imageItem}>
-                  <img
-                    src={previewUrls[fileInfo.name] || "/placeholder-image.jpg"}
-                    alt={fileInfo.name}
-                    className={styles.imagePreview}
-                  />
-                  <div className={styles.imageInfo}>
-                    <p className={styles.imageName}>{fileInfo.name}</p>
-                    <div className={styles.imageStatus}>
-                      {isUploaded ? (
-                        <span className={styles.uploadedBadge}>آپلود شده</span>
-                      ) : (
-                        <span className={styles.pendingBadge}>
-                          در انتظار آپلود
-                        </span>
-                      )}
-                    </div>
-                    {store.uploadProgress[fileInfo.name] !== undefined && (
-                      <div className={styles.progressContainer}>
-                        <div className={styles.progressBar}>
-                          <div
-                            className={styles.progressFill}
-                            style={{
-                              width: `${store.uploadProgress[fileInfo.name]}%`,
-                            }}
-                          ></div>
-                        </div>
-                        <span className={styles.progressText}>
-                          {store.uploadProgress[fileInfo.name]}%
-                        </span>
-                      </div>
-                    )}
-                    <button
-                      className={styles.removeButton}
-                      onClick={() => handleRemoveFile(fileInfo.name)}
-                    >
-                      حذف
-                    </button>
-                  </div>
-                </div>
+                <ImageCard
+                  key={fileInfo.name || `file-${index}`}
+                  fileInfo={fileInfo}
+                  index={index}
+                  previewUrls={previewUrls}
+                  setPreviewUrls={setPreviewUrls}
+                  setFiles={setFiles}
+                />
               )
             })}
           </div>
