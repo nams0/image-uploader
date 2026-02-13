@@ -51,13 +51,13 @@ const MainPage = () => {
           },
           onUploadProgress: (ProgressEvent) => {
             const percentCompleted = Math.round(
-              (ProgressEvent.loaded * 100) / ProgressEvent.total
+              (ProgressEvent.loaded * 100) / ProgressEvent.total,
             )
             dispatch(
               setUploadProgress({
                 fileName: file.name,
                 progress: percentCompleted,
-              })
+              }),
             )
           },
         })
@@ -71,8 +71,8 @@ const MainPage = () => {
           if (err.response.status === 429) {
             dispatch(
               setError(
-                "تعداد درخواست‌های شما زیاد بوده است. لطفاً یک ساعت دیگر تلاش کنید"
-              )
+                "تعداد درخواست‌های شما زیاد بوده است. لطفاً یک ساعت دیگر تلاش کنید",
+              ),
             )
           } else {
             dispatch(setError("خطا در آپلود فایل: " + err.response.error))
@@ -101,9 +101,15 @@ const MainPage = () => {
         <Dropzone setFiles={setFiles} />
         <Result files={files} setFiles={setFiles} />
 
-        <button className={styles.uploadBtn} onClick={handleUpload} disabled={store.uploading}>
-          {store.uploading ? "در حال آپلود..." : `آپلود ${files.length} عکس`}
-        </button>
+        {files.length > 0 && (
+          <button
+            className={styles.uploadBtn}
+            onClick={handleUpload}
+            disabled={store.uploading}
+          >
+            {store.uploading ? "در حال آپلود..." : `آپلود ${files.length} عکس`}
+          </button>
+        )}
       </div>
     </div>
   )
