@@ -36,6 +36,14 @@ export const uploadSlice = createSlice({
       const { fileName, progress } = action.payload
       state.uploadProgress[fileName] = progress
     },
+    // reducer for removing individual files
+    removeFileInfo: (state, action) => {
+      const fileName = action.payload
+      state.fileInfos = state.fileInfos.filter(file => file.name !== fileName)
+      state.fileUrls = state.fileUrls.filter(url => !url.includes(fileName))
+      state.downloadUrls = state.downloadUrls.filter(url => !url.includes(fileName))
+      delete state.uploadProgress[fileName]
+    },
     resetUploads: (state) => {
       state.fileUrls = []
       state.downloadUrls = []
@@ -54,6 +62,7 @@ export const {
   addFileInfo,
   setError,
   setUploadProgress,
+  removeFileInfo, // Export the new action
   resetUploads,
 } = uploadSlice.actions
 
