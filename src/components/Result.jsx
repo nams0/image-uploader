@@ -1,27 +1,59 @@
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { useState, useEffect } from "react"
 import styles from "./Result.module.css"
 import { BsImages } from "react-icons/bs"
 import ImageCard from "./ImageCard"
+import { resetUploads } from "../features/upload/uploadSlice"
 
-function Result({ files, setFiles }) {
+function Result({ files = [], setFiles }) {
   const store = useSelector((store) => store.uploader)
+  const dispatch = useDispatch()
   const [previewUrls, setPreviewUrls] = useState({})
 
   const handleRemoveAll = () => {
     setFiles([])
-    // Also clean up the preview URLs
+
+    // Clean up ALL preview URLs
     Object.values(previewUrls).forEach((url) => URL.revokeObjectURL(url))
     setPreviewUrls({})
+    dispatch(resetUploads())
   }
 
-  // Combine uploaded files with selected but not uploaded files with duplicate prevention
-  const allFiles = [
-    ...store.fileInfos,
-    ...files.filter(
-      (file) => !store.fileInfos.some((info) => info.name === file.name)
-    ),
-  ]
+  // Create a combined list with unique identifiers
+  const createAllFilesList = () => {
+    const combinedFiles = []
+    const addedFileNames = new Set()
+
+    store.fileInfos.forEach((file, index) => {
+      const fileWithMeta = {
+        ...file,
+        uniqueKey: `redux_${file.name}_${index}`,
+        isFromRedux: true,
+      }
+      combinedFiles.push(fileWithMeta)
+      addedFileNames.add(file.name)
+    })
+
+    // Add local files that aren't already in Redux
+    files.forEach((file, index) => {
+      if (!addedFileNames.has(file.name)) {
+        // Make sure to pass the actual File object
+        const fileWithMeta =
+          file instanceof File ? file : new File([file], file.name)
+        combinedFiles.push({
+          ...fileWithMeta,
+          name: file.name,
+          uniqueKey: `local_${file.name}_${index}`,
+          isFromRedux: false,
+          localIndex: index,
+        })
+      }
+    })
+
+    return combinedFiles
+  }
+
+  const allFiles = createAllFilesList()
 
   return (
     <div>
@@ -42,28 +74,34 @@ function Result({ files, setFiles }) {
           </div>
 
           {allFiles.length > 0 && (
-            <button onClick={handleRemoveAll}>حذف همه</button>
+            <button
+              onClick={handleRemoveAll}
+              className={styles.removeAllButton}
+            >
+              حذف همه
+            </button>
           )}
         </div>
 
         {allFiles.length > 0 ? (
           <div className={styles.imagesGrid}>
-            {allFiles.map((file, index) => {
-              // Fix: Ensure fileInfo is always a valid object
-              if (!file) return null;
-              
-              const fileInfo = file.name 
-                ? file // It's already a file object
-                : { name: `عکس ${index + 1}`, ...file } // Create a proper object
+            {allFiles.map((file) => {
+              if (!file) return null
+
+              // Pass the actual File object for local files
+              const fileToPass = file.isFromRedux
+                ? file
+                : files.find((f) => f.name === file.name) || file
 
               return (
                 <ImageCard
-                  key={fileInfo.name || `file-${index}`}
-                  fileInfo={fileInfo}
-                  index={index}
+                  key={file.uniqueKey}
+                  fileInfo={fileToPass}
+                  index={file.localIndex || 0}
                   previewUrls={previewUrls}
                   setPreviewUrls={setPreviewUrls}
                   setFiles={setFiles}
+                  isFromRedux={file.isFromRedux}
                 />
               )
             })}
