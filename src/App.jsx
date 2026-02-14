@@ -3,6 +3,7 @@ import MainPage from "./pages/MainPage"
 
 import SignupPage from "./pages/SignupPage"
 import LoginPage from "./pages/LoginPage"
+import AlbumView from "./pages/AlbumView"
 
 function App() {
   return (
@@ -11,6 +12,11 @@ function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/album/:albumId"
+          element={<AlbumView />}
+          errorElement={<Navigate to="/" />}
+        />
       </Routes>
     </div>
   )
