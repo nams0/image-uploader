@@ -146,7 +146,7 @@ const MainPage = () => {
         )}
 
         {/* Show album link after upload */}
-        {store.uploaded && albumUrl && (
+        {store.uploaded && albumUrl && files.length === 0 && (
           <div className={styles.shareContainer}>
             <p className={styles.shareLabel}>لینک آلبوم شما:</p>
             <div className={styles.shareBox}>
