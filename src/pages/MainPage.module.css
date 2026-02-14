@@ -43,3 +43,72 @@
   filter: brightness(1.1);
   color: #fff;
 }
+
+
+.shareContainer {
+  width: 50%;
+  margin: auto;
+  padding: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.shareLabel {
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.shareBox {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  background: white;
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.shareInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0.6rem;
+  font-size: 1rem;
+  color: #333;
+  background: transparent;
+  direction: ltr;
+  text-align: left;
+}
+
+.copyBtn {
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.copyBtn:hover {
+  background: #5568d3;
+  transform: scale(1.05);
+}
+
+.copyBtn:active {
+  transform: scale(0.95);
+}
+
+.shareHint {
+  color: white;
+  font-size: 0.85rem;
+  margin-top: 0.75rem;
+  text-align: center;
+  opacity: 0.9;
+}
