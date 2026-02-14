@@ -29,7 +29,8 @@ const MainPage = () => {
   const dispatch = useDispatch()
   const token = Cookies.get("auth-token")
 
-  const albumUrlConstructor = (albumUrl) => setAlbumUrl(`http://localhost:3000/album/${albumUrl.split("share/")[1]}`)
+  const albumUrlConstructor = (albumUrl) =>
+    setAlbumUrl(`http://localhost:3000/album/${albumUrl.split("share/")[1]}`)
 
   const handleUpload = async () => {
     if (!files || files.length === 0) return
@@ -39,16 +40,20 @@ const MainPage = () => {
     dispatch(setUploading(true))
     dispatch(setError(""))
 
+    // Track which files are being uploaded
+    const uploadingFileNames = []
+
     // Append all files to FormData
     for (const file of files) {
       if (store.fileInfos.some((info) => info.name === file.name)) {
         continue
       }
       formData.append("images", file)
+      uploadingFileNames.push(file.name) // Track file names
     }
 
     try {
-      //  Upload all images at once
+      // Upload all images at once
       const data = await api.post("/api/images/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -58,7 +63,6 @@ const MainPage = () => {
           const percentCompleted = Math.round(
             (ProgressEvent.loaded * 100) / ProgressEvent.total,
           )
-          // Optional: dispatch overall progress
         },
       })
 
@@ -69,17 +73,19 @@ const MainPage = () => {
         albumUrlConstructor(data.albumUrl)
       }
 
-      // Add all uploaded images to Redux with proper name mapping
-      data.images?.forEach((img) => {
-        dispatch(addFileUrl(img.url))
-        dispatch(addDownloadUrl(img.downloadUrl))
-        dispatch(
-          addFileInfo({
-            ...img,
-            name: img.originalName || img.filename || "Unknown", // Map to 'name'
-          }),
-        )
-      })
+      // Only add newly uploaded images to Redux (not all images)
+      data.images
+        ?.filter((img) => uploadingFileNames.includes(img.originalName))
+        .forEach((img) => {
+          dispatch(addFileUrl(img.url))
+          dispatch(addDownloadUrl(img.downloadUrl))
+          dispatch(
+            addFileInfo({
+              ...img,
+              name: img.originalName || img.filename || "Unknown",
+            }),
+          )
+        })
 
       // Clear local files after successful upload
       setFiles([])
