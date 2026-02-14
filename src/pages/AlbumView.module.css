@@ -1,0 +1,328 @@
+.container {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  padding: 5px;
+  width: 40px;
+  height: 40px;
+  color: #fff;
+  background-color: #8832fe;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.logo svg {
+  margin-top: 3px;
+  font-size: 1.3rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.logo:hover svg {
+  font-size: 1.6rem;
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+}
+
+.shareButton,
+.downloadAllButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.shareButton {
+  background: #3b82f6;
+  color: white;
+}
+
+.shareButton:hover {
+  background: #2563eb;
+}
+
+.downloadAllButton {
+  background: #10b981;
+  color: white;
+}
+
+.downloadAllButton:hover {
+  background: #059669;
+}
+
+.backButton {
+  color: #8832fe;
+  background-color: transparent;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid #c0becb;
+  padding: 5px 15px;
+  margin-top: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.backButton:hover {
+  border-color: #8832fe;
+  color: #000;
+  background-color: #8732fe18;
+}
+.album {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 15px;
+  border: 1px solid #8832fe;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.albumInfo {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #8832fe;
+  margin-bottom: 40px;
+  padding-bottom: 10px;
+  width: 100%;
+}
+
+.albumInfo .info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-right: 6px;
+}
+
+.albumIcon {
+  background: #8832fe;
+  font-size: 2.3rem;
+  color: #fff;
+  padding: 6px;
+  border-radius: 10px;
+  width: 50px;
+  height: 50px;
+}
+
+.albumInfo p {
+  color: #6b7280;
+  margin: 4px 0;
+}
+
+.albumDate {
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+.imageGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.imageCard {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.imageCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.imageCard:hover .imageOverlay {
+  opacity: 1;
+}
+
+.image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.imageOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: white;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.imageName {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.imageSize {
+  font-size: 12px;
+  color: #d1d5db;
+  margin-bottom: 10px;
+}
+
+.imageSize .unit {
+  margin-left: 4px;
+  color: inherit;
+}
+
+.downloadButton {
+  padding: 8px 16px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s;
+}
+
+.downloadButton:hover {
+  background: #059669;
+}
+
+/* Lightbox */
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.lightboxContent {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.lightboxImage {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+.lightboxDownload {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lightboxClose {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Loading & Error States */
+.loadingContainer,
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  gap: 20px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid #f3f4f6;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.errorIcon {
+  font-size: 64px;
+  color: #ef4444;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .imageGrid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+
+  .image {
+    height: 150px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
