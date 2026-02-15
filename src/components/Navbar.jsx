@@ -10,7 +10,7 @@ import api from "../services/api"
 
 import styles from "./Navbar.module.css"
 
-function Navbar({ setFiles }) {
+function Navbar({ files, setFiles }) {
   const [token, setToken] = useState(Cookies.get("auth-token"))
   const [albumId, setAlbumId] = useState(null)
   const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -37,7 +37,7 @@ function Navbar({ setFiles }) {
     }
 
     fetchUserAlbum()
-  }, [token])
+  }, [token, files])
 
   // Close dropdown when clicking outside
   useEffect(() => {

@@ -124,7 +124,7 @@ const MainPage = () => {
 
   return (
     <div>
-      <Navbar setFiles={setFiles} />
+      <Navbar files={files} setFiles={setFiles} />
       <div className={styles.container}>
         <h2 className={styles.title}>عکس‌های مورد نظرت رو آپلود کن</h2>
         <p className={styles.description}>
