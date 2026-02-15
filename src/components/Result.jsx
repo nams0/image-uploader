@@ -4,6 +4,7 @@ import styles from "./Result.module.css"
 import { BsImages } from "react-icons/bs"
 import ImageCard from "./ImageCard"
 import { resetUploads } from "../features/upload/uploadSlice"
+import e2p from "../utils/e2p"
 
 function Result({ files = [], setFiles }) {
   const store = useSelector((store) => store.uploader)
@@ -67,7 +68,7 @@ function Result({ files = [], setFiles }) {
               <p>عکس های شما</p>
               <p className={styles.albumInfoCount}>
                 {allFiles.length > 0
-                  ? `${allFiles.length} عکس در آلبوم`
+                  ? `${e2p(allFiles.length)} عکس در آلبوم`
                   : "هنوز عکسی آپلود نشده"}
               </p>
             </div>

@@ -20,6 +20,7 @@ import {
   setError,
   setUploadProgress,
 } from "../features/upload/uploadSlice"
+import e2p from "../utils/e2p"
 
 const MainPage = () => {
   const [files, setFiles] = useState([])
@@ -141,7 +142,9 @@ const MainPage = () => {
             onClick={handleUpload}
             disabled={store.uploading}
           >
-            {store.uploading ? "در حال آپلود..." : `آپلود ${files.length} عکس`}
+            {store.uploading
+              ? "در حال آپلود..."
+              : `آپلود ${e2p(files.length)} عکس`}
           </button>
         )}
 

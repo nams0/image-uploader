@@ -6,6 +6,7 @@ import styles from "./AlbumView.module.css"
 import { BsDownload, BsShare, BsImages, BsTrash3 } from "react-icons/bs"
 import { TbFaceIdError } from "react-icons/tb"
 import { LuUpload } from "react-icons/lu"
+import e2p from "../utils/e2p"
 
 function AlbumView() {
   const { albumId } = useParams()
@@ -153,7 +154,7 @@ function AlbumView() {
               <BsImages />
             </div>
             <div className={styles.info}>
-              <p>{album?.totalImages || 0} عکس</p>
+              <p>{e2p(album?.totalImages) || 0} عکس</p>
               <p className={styles.albumDate}>
                 {album?.images?.[0]?.uploadDate &&
                   new Date(album.images[0].uploadDate).toLocaleDateString(
