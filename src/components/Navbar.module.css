@@ -138,9 +138,20 @@
   margin-left: 5px;
 }
 
+.logout{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
 .album {
   color: #000;
   display: flex;
   align-items: center;
   justify-content: flex-end;
+}
+
+.dropdownItem:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

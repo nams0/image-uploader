@@ -2,21 +2,53 @@ import { LuUpload } from "react-icons/lu"
 import { VscGithubAlt } from "react-icons/vsc"
 import { LuLogOut } from "react-icons/lu"
 import { BiPhotoAlbum } from "react-icons/bi"
-
 import { FaRegUser } from "react-icons/fa6"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Cookies from "js-cookie"
+import { useState, useEffect } from "react"
+import api from "../services/api"
 
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import styles from "./Navbar.module.css"
-import { useState } from "react"
 
 function Navbar({ setFiles }) {
   const [token, setToken] = useState(Cookies.get("auth-token"))
+  const [albumId, setAlbumId] = useState(null)
+  const navigate = useNavigate()
+
+  // Fetch user's album ID when component mounts
+  useEffect(() => {
+    const fetchUserAlbum = async () => {
+      if (!token) return
+
+      try {
+        const data = await api.get("/api/albums", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+
+        if (data?.id) {
+          setAlbumId(data.id)
+        }
+      } catch (err) {
+        console.error("Error fetching album:", err)
+      }
+    }
+
+    fetchUserAlbum()
+  }, [token])
 
   const logoutHandler = () => {
     setToken(Cookies.remove("auth-token", { path: "/" }))
     setFiles([])
+    setAlbumId(null)
+  }
+
+  const handleAlbumClick = () => {
+    if (albumId) {
+      navigate(`/album/${albumId}`)
+    }
   }
 
   return (
@@ -49,20 +81,24 @@ function Navbar({ setFiles }) {
               align="center"
             >
               <DropdownMenu.Item asChild>
-                <Link to="/album" className={styles.dropdownItem}>
+                <button
+                  className={styles.dropdownItem}
+                  onClick={handleAlbumClick}
+                  disabled={!albumId}
+                >
                   <span className={styles.album}>
                     آلبوم
                     <BiPhotoAlbum />
                   </span>
-                </Link>
+                </button>
               </DropdownMenu.Item>
               <DropdownMenu.Item asChild>
-                <p className={styles.dropdownItem} onClick={logoutHandler}>
+                <button className={styles.dropdownItem} onClick={logoutHandler}>
                   <span className={styles.logout}>
                     خروج
                     <LuLogOut />
                   </span>
-                </p>
+                </button>
               </DropdownMenu.Item>
             </DropdownMenu.Content>
           </DropdownMenu.Root>
