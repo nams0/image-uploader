@@ -2,13 +2,13 @@ import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import axios from "axios"
 import Cookies from "js-cookie"
-import styles from "./AlbumView.module.css"
+import styles from "./AlbumPage.module.css"
 import { BsDownload, BsShare, BsImages, BsTrash3 } from "react-icons/bs"
 import { TbFaceIdError } from "react-icons/tb"
 import { LuUpload } from "react-icons/lu"
 import e2p from "../utils/e2p"
 
-function AlbumView() {
+function AlbumPage() {
   const { albumId } = useParams()
   const navigate = useNavigate()
   const [album, setAlbum] = useState(null)
@@ -263,4 +263,4 @@ function AlbumView() {
   )
 }
 
-export default AlbumView
+export default AlbumPage

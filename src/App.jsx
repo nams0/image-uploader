@@ -3,7 +3,7 @@ import MainPage from "./pages/MainPage"
 
 import SignupPage from "./pages/SignupPage"
 import LoginPage from "./pages/LoginPage"
-import AlbumView from "./pages/AlbumView"
+import AlbumPage from "./pages/AlbumPage"
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route
           path="/album/:albumId"
-          element={<AlbumView />}
+          element={<AlbumPage />}
           errorElement={<Navigate to="/" />}
         />
       </Routes>
