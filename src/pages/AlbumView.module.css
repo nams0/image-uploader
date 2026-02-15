@@ -44,32 +44,30 @@
 .downloadAllButton {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
+  gap: 6px;
+  font-size: 1rem;
+  padding: 18px 15px;
+  height: 2rem;
+  border-radius: 5px;
   cursor: pointer;
-  transition: all 0.2s;
+  border: 1px solid #c9c5d6;
+  background-color: #fff;
+  color: #8832fe;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
 }
 
-.shareButton {
-  background: #3b82f6;
-  color: white;
+.shareButton,
+.downloadAllButton svg {
+  margin-right: 5px;
+  margin-bottom: 5px;
 }
 
-.shareButton:hover {
-  background: #2563eb;
-}
-
-.downloadAllButton {
-  background: #10b981;
-  color: white;
-}
-
+.shareButton:hover,
 .downloadAllButton:hover {
-  background: #059669;
+  border-color: #8832fe;
+  color: #000;
+  background-color: #8732fe18;
 }
 
 .backButton {
@@ -159,7 +157,7 @@
 .deleteAlbumBtn:hover {
   background: #c82333;
 }
-.deleteAlbumBtn:hover svg{
+.deleteAlbumBtn:hover svg {
   color: #fff;
 }
 
