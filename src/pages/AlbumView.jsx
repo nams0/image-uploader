@@ -1,10 +1,10 @@
-// pages/AlbumView.jsx
 import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import axios from "axios"
+import Cookies from "js-cookie"
 import styles from "./AlbumView.module.css"
-import { BsDownload, BsShare, BsImages } from "react-icons/bs"
-import { TbFaceIdError } from "react-icons/tb";
+import { BsDownload, BsShare, BsImages, BsTrash3 } from "react-icons/bs"
+import { TbFaceIdError } from "react-icons/tb"
 import { LuUpload } from "react-icons/lu"
 
 function AlbumView() {
@@ -15,6 +15,10 @@ function AlbumView() {
   const [error, setError] = useState(null)
   const [selectedImage, setSelectedImage] = useState(null)
   const [copied, setCopied] = useState(false)
+  const [isOwner, setIsOwner] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+
+  const token = Cookies.get("auth-token")
 
   useEffect(() => {
     fetchAlbumData()
@@ -27,12 +31,39 @@ function AlbumView() {
         `http://localhost:5000/api/albums/share/${albumId}`,
       )
       setAlbum(response.data)
+
+      // Check if current user owns this album
+      if (token) {
+        try {
+          const userAlbumRes = await axios.get(
+            "http://localhost:5000/api/albums",
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            },
+          )
+          setIsOwner(userAlbumRes.data?.id === parseInt(albumId))
+        } catch (err) {
+          setIsOwner(false)
+        }
+      }
+
       setError(null)
     } catch (err) {
       console.error("Error fetching album:", err)
-      setError("آلبوم یافت نشد یا خطایی رخ داده است")
+      setError("آلبوم یافت نشد یا خطایی رخ کرده است")
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleDeleteAlbum = async () => {
+    try {
+      await axios.delete("http://localhost:5000/api/albums", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      navigate("/")
+    } catch (err) {
+      alert("خطا در حذف آلبوم. لطفاً دوباره تلاش کنید.")
     }
   }
 
@@ -42,7 +73,6 @@ function AlbumView() {
         `http://localhost:5000${image.downloadUrl}`,
         { responseType: "blob" },
       )
-
       const url = window.URL.createObjectURL(new Blob([response.data]))
       const link = document.createElement("a")
       link.href = url
@@ -57,14 +87,12 @@ function AlbumView() {
   }
 
   const handleShare = () => {
-    const shareUrl = window.location.href
-    navigator.clipboard.writeText(shareUrl)
+    navigator.clipboard.writeText(window.location.href)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
 
   const handleDownloadAll = async () => {
-    // Download all images
     for (const image of album.images) {
       await handleDownload(image)
     }
@@ -120,18 +148,30 @@ function AlbumView() {
       <div className={styles.album}>
         {/* Album Info */}
         <div className={styles.albumInfo}>
-          <div className={styles.albumIcon}>
-            <BsImages />
+          <div className={styles.albumDetails}>
+            <div className={styles.albumIcon}>
+              <BsImages />
+            </div>
+            <div className={styles.info}>
+              <p>{album?.totalImages || 0} عکس</p>
+              <p className={styles.albumDate}>
+                {album?.images?.[0]?.uploadDate &&
+                  new Date(album.images[0].uploadDate).toLocaleDateString(
+                    "fa-IR",
+                  )}
+              </p>
+            </div>
           </div>
-          <div className={styles.info}>
-            <p>{album?.totalImages || 0} عکس</p>
-            <p className={styles.albumDate}>
-              {album?.images?.[0]?.uploadDate &&
-                new Date(album.images[0].uploadDate).toLocaleDateString(
-                  "fa-IR",
-                )}
-            </p>
-          </div>
+          {/* Delete Button - Only for Owner */}
+          {isOwner && (
+            <button
+              onClick={() => setShowDeleteModal(true)}
+              className={styles.deleteAlbumBtn}
+              title="حذف آلبوم"
+            >
+              <BsTrash3 />
+            </button>
+          )}
         </div>
 
         {/* Image Grid */}
@@ -162,7 +202,7 @@ function AlbumView() {
         </div>
       </div>
 
-      {/* Lightbox Modal */}
+      {/* Lightbox */}
       {selectedImage && (
         <div className={styles.lightbox} onClick={() => setSelectedImage(null)}>
           <div className={styles.lightboxContent}>
@@ -178,8 +218,7 @@ function AlbumView() {
               }}
               className={styles.lightboxDownload}
             >
-              <BsDownload />
-              دانلود
+              <BsDownload /> دانلود
             </button>
             <button
               onClick={() => setSelectedImage(null)}
@@ -187,6 +226,35 @@ function AlbumView() {
             >
               ✕
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div
+          className={styles.modalOverlay}
+          onClick={() => setShowDeleteModal(false)}
+        >
+          <div
+            className={styles.deleteModal}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <BsTrash3 className={styles.deleteIcon} />
+            <h3>حذف آلبوم</h3>
+            <p>آیا مطمئن هستید که می‌خواهید کل آلبوم را حذف کنید؟</p>
+            <p className={styles.warning}>این عمل قابل بازگشت نیست!</p>
+            <div className={styles.modalActions}>
+              <button onClick={handleDeleteAlbum} className={styles.confirmBtn}>
+                بله، حذف کن
+              </button>
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className={styles.cancelBtn}
+              >
+                لغو
+              </button>
+            </div>
           </div>
         </div>
       )}

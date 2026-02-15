@@ -99,9 +99,16 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
+.albumDetails {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .albumInfo {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid #8832fe;
   margin-bottom: 40px;
   padding-bottom: 10px;
@@ -134,6 +141,85 @@
 .albumDate {
   font-size: 14px;
   color: #9ca3af;
+}
+
+.deleteAlbumBtn {
+  border: 2px solid #dc3545;
+  background-color: #ffe4e6;
+  color: #dc3545;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 8px;
+  padding: 6px;
+  cursor: pointer;
+  font-size: 1.4rem;
+  transition: 0.2s;
+}
+
+.deleteAlbumBtn:hover {
+  background: #c82333;
+}
+.deleteAlbumBtn:hover svg{
+  color: #fff;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 9999;
+  height: 100vh;
+}
+
+.deleteModal {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.deleteIcon {
+  font-size: 3rem;
+  color: #dc3545;
+  margin-bottom: 1rem;
+}
+
+.warning {
+  color: #dc3545;
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+.modalActions {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.confirmBtn {
+  background: #dc3545;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.cancelBtn {
+  background: #6c757d;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 .imageGrid {
