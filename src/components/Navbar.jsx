@@ -5,18 +5,18 @@ import { BiPhotoAlbum } from "react-icons/bi"
 import { FaRegUser } from "react-icons/fa6"
 import { Link, useNavigate } from "react-router-dom"
 import Cookies from "js-cookie"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import api from "../services/api"
 
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import styles from "./Navbar.module.css"
 
 function Navbar({ setFiles }) {
   const [token, setToken] = useState(Cookies.get("auth-token"))
   const [albumId, setAlbumId] = useState(null)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
   const navigate = useNavigate()
+  const dropdownRef = useRef(null)
 
-  // Fetch user's album ID when component mounts
   useEffect(() => {
     const fetchUserAlbum = async () => {
       if (!token) return
@@ -39,16 +39,34 @@ function Navbar({ setFiles }) {
     fetchUserAlbum()
   }, [token])
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
+
   const logoutHandler = () => {
     setToken(Cookies.remove("auth-token", { path: "/" }))
     setFiles([])
     setAlbumId(null)
+    setDropdownOpen(false)
   }
 
   const handleAlbumClick = () => {
     if (albumId) {
       navigate(`/album/${albumId}`)
+      setDropdownOpen(false)
     }
+  }
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen)
   }
 
   return (
@@ -68,40 +86,32 @@ function Navbar({ setFiles }) {
         </a>
 
         {token ? (
-          <DropdownMenu.Root>
-            <DropdownMenu.Trigger asChild>
-              <button className={styles.profile}>
-                <FaRegUser />
-              </button>
-            </DropdownMenu.Trigger>
+          <div className={styles.dropdownWrapper} ref={dropdownRef}>
+            <button className={styles.profile} onClick={toggleDropdown}>
+              <FaRegUser />
+            </button>
 
-            <DropdownMenu.Content
-              className={styles.dropdownContent}
-              sideOffset={5}
-              align="center"
-            >
-              <DropdownMenu.Item asChild>
+            {dropdownOpen && (
+              <div className={styles.dropdownContent}>
                 <button
                   className={styles.dropdownItem}
                   onClick={handleAlbumClick}
                   disabled={!albumId}
                 >
                   <span className={styles.album}>
-                    آلبوم
                     <BiPhotoAlbum />
+                    آلبوم
                   </span>
                 </button>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item asChild>
                 <button className={styles.dropdownItem} onClick={logoutHandler}>
                   <span className={styles.logout}>
-                    خروج
                     <LuLogOut />
+                    خروج
                   </span>
                 </button>
-              </DropdownMenu.Item>
-            </DropdownMenu.Content>
-          </DropdownMenu.Root>
+              </div>
+            )}
+          </div>
         ) : (
           <Link to="/login" className={styles.login}>
             ورود
