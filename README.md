@@ -2,7 +2,7 @@
 
 A modern Persian (Farsi) image sharing and album management web application built with React and Redux.
 
-![React](https://img.shields.io/badge/React-18-blue?logo=react)
+![React](https://img.shields.io/badge/React-19-blue?logo=react)
 ![Vite](https://img.shields.io/badge/Vite-Latest-purple?logo=vite)
 ![Redux](https://img.shields.io/badge/Redux_Toolkit-Latest-764ABC?logo=redux)
 
@@ -23,7 +23,7 @@ A modern Persian (Farsi) image sharing and album management web application buil
 
 | Technology | Purpose |
 |------------|---------|
-| **React 18** | UI Library |
+| **React 19** | UI Library |
 | **Vite** | Build Tool & Dev Server |
 | **Redux Toolkit** | State Management |
 | **React Router DOM** | Client-side Routing |
@@ -40,7 +40,7 @@ The backend API is running locally on my PC at `http://localhost:5000`.
 
 Authentication is handled via JWT tokens stored in cookies (`auth-token`).
 
-## 📤 Upload Constraints
+## Upload Constraints
 
 | Constraint | Value |
 |------------|-------|
