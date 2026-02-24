@@ -108,9 +108,21 @@ Redux Toolkit manages the upload state with the following structure:
 ### Home Page
 
 ![Home Page](./screenshots/home1.png)
+
+### Login Page
+
 ![Login Page](./screenshots/login.png)
+
+### Sign Up Page
+
 ![Sign Up Page](./screenshots/signup.png)
+
+### Home Page/Pending Uploads
+
 ![Home Page/Pending Uploads](./screenshots/imageup.png)
+
+### Home Page/Generated Link
+ 
 ![Home Page/Generated Link](./screenshots/link.png)
 
 ### Album
