@@ -21,18 +21,18 @@ A modern Persian (Farsi) image sharing and album management web application buil
 
 ## Tech Stack
 
-| Technology | Purpose |
-|------------|---------|
-| **React 19** | UI Library |
-| **Vite** | Build Tool & Dev Server |
-| **Redux Toolkit** | State Management |
-| **React Router DOM** | Client-side Routing |
-| **CSS Modules** | Styling |
-| **Axios** | HTTP Client |
-| **Framer Motion** | Animations |
-| **React Dropzone** | File Upload |
-| **React Icons** | Icon Library |
-| **js-cookie** | Cookie Management |
+| Technology           | Purpose                 |
+| -------------------- | ----------------------- |
+| **React 19**         | UI Library              |
+| **Vite**             | Build Tool & Dev Server |
+| **Redux Toolkit**    | State Management        |
+| **React Router DOM** | Client-side Routing     |
+| **CSS Modules**      | Styling                 |
+| **Axios**            | HTTP Client             |
+| **Framer Motion**    | Animations              |
+| **React Dropzone**   | File Upload             |
+| **React Icons**      | Icon Library            |
+| **js-cookie**        | Cookie Management       |
 
 ## Backend
 
@@ -42,9 +42,9 @@ Authentication is handled via JWT tokens stored in cookies (`auth-token`).
 
 ## Upload Constraints
 
-| Constraint | Value |
-|------------|-------|
-| Max file size | 3 MB |
+| Constraint        | Value                          |
+| ----------------- | ------------------------------ |
+| Max file size     | 3 MB                           |
 | Supported formats | JPEG, JPG, PNG, GIF, BMP, WebP |
 
 ## Usage
@@ -66,6 +66,7 @@ Authentication is handled via JWT tokens stored in cookies (`auth-token`).
 ## Form Validation
 
 ### Signup Validation
+
 - Username: English letters, numbers, and underscores only
 - Email: Valid email format required
 - Password: Minimum 8 characters with:
@@ -76,6 +77,7 @@ Authentication is handled via JWT tokens stored in cookies (`auth-token`).
 - Confirm Password: Must match password
 
 ### Login Validation
+
 - Email: Required
 - Password: Required
 
@@ -101,6 +103,16 @@ Redux Toolkit manages the upload state with the following structure:
 }
 ```
 
-<p align="center">
-  Made with ❤️ by <a href="https://github.com/nams0">Namso</a>
-</p>
+## Screenshots
+
+### Home Page
+
+![Home Page](./screenshots/home1.png)
+[](./screenshots/home2.png)
+[](./screenshots/home3.png)
+[](./screenshots/home4.png)
+[](./screenshots/home5.png)
+
+### Album
+
+![Album Page](./screenshots/album.png)
